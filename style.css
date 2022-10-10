@@ -1,3 +1,26 @@
 #root {
   color: red;
+  background-color: azure;
+  
+
 }
+
+.episodeTab  {
+
+  color: rgb(0, 43, 0);
+  background-color: bisque;
+}
+
+.episodeName {
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 3px;
+  font-size: 1.2rem;
+}
+
+.allEpisodesDiv {
+  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+  }
