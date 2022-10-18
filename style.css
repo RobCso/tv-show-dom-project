@@ -1,11 +1,25 @@
 #root {
-  color: red;
-  background-color: azure;
-  
-
+  color: rgb(3, 15, 3);  
 }
 
-.episodeTab  {
+.root {
+    background-color: azure;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+    width: 90%;
+    margin: auto;
+}
+
+.episode-container {
+  background-color: rgb(222, 237, 240);
+  width: 100%;
+  text-align: center;
+  box-shadow: 5px 10px 18px #888888;
+}
+
+/* .episodeTab  {
 
   color: rgb(0, 43, 0);
   background-color: bisque;
@@ -23,4 +37,4 @@
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 20px;
     row-gap: 20px;
-  }
+  } */
