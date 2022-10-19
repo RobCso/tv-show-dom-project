@@ -1,17 +1,16 @@
 //You can edit ALL of the code here
 let allEpisodes; //= getAllEpisodes();
 const rootElem = document.getElementById("root");
-const url = "https://api.tvmaze.com/shows/82/episodes"
+let url = "https://api.tvmaze.com/shows/82/episodes";
 
-
-const setup = async() => {
+const setup = async () => {
   try {
-    const response = fetch(url)
-    allEpisodes = await(await response).json()
-    makePageForEpisodes(allEpisodes)  
-  } catch(error){
-    console.log(error)
-  }  
+    const response = fetch(url);
+    allEpisodes = await (await response).json();
+    makePageForEpisodes(allEpisodes);
+  } catch (error) {
+    console.log(error);
+  }
   // fetch("https://api.tvmaze.com/shows/82/episodes")
   //   .then(function (response) {
   //     return response.json();
@@ -24,123 +23,143 @@ const setup = async() => {
   //   })
   //   .catch((error) => {
   //     console.log(error);
-  //   });  
-}
+  //   });
+};
 
-const searchField = document.getElementById("search-field")
+const searchField = document.getElementById("search-field");
 
-searchField.addEventListener("keyup", (e) =>{
-  // console.log(e.target.value)  
-  const pickedEpisodes = allEpisodes.filter(episode => {    
-   return (
-     episode.name
-       .toLocaleLowerCase()
-       .includes(e.target.value.toLocaleLowerCase()) ||
-     episode.summary
-       .toLocaleLowerCase()
-       .includes(e.target.value.toLocaleLowerCase())
-   );           
-  })
-  rootElem.innerHTML = ""
+searchField.addEventListener("keyup", (e) => {
+  // console.log(e.target.value)
+  const pickedEpisodes = allEpisodes.filter((episode) => {
+    return (
+      episode.name
+        .toLocaleLowerCase()
+        .includes(e.target.value.toLocaleLowerCase()) ||
+      episode.summary
+        .toLocaleLowerCase()
+        .includes(e.target.value.toLocaleLowerCase())
+    );
+  });
+  rootElem.innerHTML = "";
   // while(rootElem.firstChild) {
   //   rootElem.removeChild(rootElem.firstChild)
   // }
- makePageForEpisodes(pickedEpisodes) 
-  document.querySelector(".para").innerText = `displaying ${pickedEpisodes.length}/${allEpisodes.length} episodes`
-} )
+  makePageForEpisodes(pickedEpisodes);
+  document.querySelector(
+    ".para"
+  ).innerText = `displaying ${pickedEpisodes.length}/${allEpisodes.length} episodes`;
+});
 
-const dropdown = document.getElementById("select")
-// const episodeID = document.getElementById("select").value;
+const dropdown = document.getElementById("select");
 
-dropdown.onchange = function() {
-  const episodeID = document.getElementById("select").value
+
+dropdown.onchange = function () {
+  const episodeID = document.getElementById("select").value;
   rootElem.innerHTML = "";
   if (episodeID == "original") {
-    makePageForEpisodes(allEpisodes)
-    
+    makePageForEpisodes(allEpisodes);
   } else {
-
-    let backButton = "" //= document.createElement("button");
+    let backButton = "";
     
-    //const el = document.querySelectorAll("button")
-    //console.log(el)
-    console.log(backButton)
+    //console.log(backButton);
     if (!document.querySelector("button")) {
-      backButton = document.createElement("button");
-
-      //const el = document.querySelector("button");
+      backButton = document.createElement("button");      
       backButton.id = "back-button";
       backButton.innerText = "backButton";
-
       document.body.appendChild(backButton);
     } else {
       backButton = document.createElement("button");
       backButton.id = "back-button";
       backButton.innerText = "backButton";
-
       document.body.appendChild(backButton);
       document.body.removeChild(backButton);
-    } 
-    
+    }
+
     const button = document.getElementById("back-button");
-    button.addEventListener("click", () => {
-      //document.body.removeChild(backButton);
+    button.addEventListener("click", () => {      
       return location.reload();
     });
 
+    const dropDownEpisode = allEpisodes.filter((episode) => {
+      // console.log(episode.name)
+      // console.log(episodeID)
+      // console.log(episode.id)
+      return episode.id == episodeID;
+    });
+    makePageForEpisodes(dropDownEpisode);
+    // console.log(episodeID)    
+  }
+};
 
-  const dropDownEpisode = allEpisodes.filter(episode => {
-    // console.log(episode.name)
-    // console.log(episodeID)
-    // console.log(episode.id)
-    return (
-      episode.id == episodeID)
-  })
-  makePageForEpisodes(dropDownEpisode)
-  // console.log(episodeID)
-  // rootElem.innerHTML = episodeID
-}}
-
-
-
-function makePageForEpisodes(episodeList) {  
-  rootElem.className = "root"
-  episodeList.forEach(episode =>{
+function makePageForEpisodes(episodeList) {
+  rootElem.className = "root";
+  episodeList.forEach((episode) => {
     const episodesContainer = document.createElement("div");
     rootElem.appendChild(episodesContainer);
     const episodeName = document.createElement("h1");
     episodeName.className = "episode-name";
     episodesContainer.className = "episode-container";
-    episodesContainer.id = episode.id
-    episodeName.innerText = `${episode.name} - ${episodeCode(episode.season, episode.number)}`;
+    episodesContainer.id = episode.id;
+    episodeName.innerText = `${episode.name} - ${episodeCode(
+      episode.season,
+      episode.number
+    )}`;
     episodesContainer.appendChild(episodeName);
     const episodeImage = document.createElement("img");
     episodeImage.src = episode.image.medium;
     episodesContainer.appendChild(episodeImage);
     const episodeSummary = document.createElement("p");
     episodeSummary.innerHTML = episode.summary;
-    episodesContainer.appendChild(episodeSummary)
+    episodesContainer.appendChild(episodeSummary);
     //select menu is bellow
-    const selectItem = document.createElement("option")
-    selectItem.value = episode.id;//`${episodeCode(episode.season, episode.number)}`;
-    selectItem.id = episode.id
-    selectItem.innerText = `${episodeCode(
-      episode.season,
-      episode.number
-    )} - ${episode.name}`;
-    dropdown.appendChild(selectItem)
-  })   
+    const selectItem = document.createElement("option");
+    selectItem.value = episode.id; 
+    selectItem.id = episode.id;
+    selectItem.innerText = `${episodeCode(episode.season, episode.number)} - ${
+      episode.name
+    }`;
+    dropdown.appendChild(selectItem);
+  });
 }
 
-
-
-function episodeCode(season, number){
+function episodeCode(season, number) {
   season = season < 10 ? "0" + season : season;
   number = number < 10 ? "0" + number : number;
-  return `S${season}E${number}`
+  return `S${season}E${number}`;
 }
 
- window.onload = setup;
+const allShows = getAllShows()
+const showSelect = document.getElementById("shows")
+
+allShows.forEach(show=>{
+  const showOption = document.createElement("option")
+  
+  showOption.innerText = show.name
+  showOption.id = show.id
+  show.value = show.id
+  showSelect.appendChild(showOption)
+})
+
+showSelect.onchange = function() {
+  const showID = document.getElementById("shows").value
+  console.log(showID)
+  allShows.forEach(show=>{
+    if(showID==show.name){
+      console.log(show.id)
+      url = `https://api.tvmaze.com/shows/${show.id}/episodes`;
+      console.log(url)
+      
+    }
+    rootElem.innerHTML = "";
+    setup()
+    makePageForEpisodes(allEpisodes)
+  })
+}
+
+console.log(allShows);
+window.onload = setup;
+
+
 
 // let allEpisodes = getAllEpisodes();
 // let rootElem = document.getElementById("root");
@@ -154,14 +173,13 @@ function episodeCode(season, number){
 // searchField.addEventListener("keyup", ()=>{
 //   // allEpisodes.filter()
 
-
 // })
 
 //  allEpisodes.forEach(item=>{
 //  episodeTab = allEpisodesDiv.appendChild(document.createElement("section"));
 //  episodeName = episodeTab.appendChild(document.createElement("h1"));
 //  episodeThumbnail = episodeTab.appendChild(document.createElement("img"));
-//  episodeSummary = episodeTab.appendChild(document.createElement("p")) 
+//  episodeSummary = episodeTab.appendChild(document.createElement("p"))
 //  episodeTab.className = "episodeTab";
 //  episodeName.className = "episodeName";
 //  episodeThumbnail.className = "episodeThumbnail";
@@ -170,6 +188,5 @@ function episodeCode(season, number){
 //  episodeThumbnail.src = item.image.medium;
 //  episodeSummary.innerHTML = item.summary
 // })
-
 
 // https://cyf-robcso-tv.netlify.app/
