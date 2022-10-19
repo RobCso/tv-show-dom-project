@@ -30,7 +30,7 @@ const setup = async() => {
 const searchField = document.getElementById("search-field")
 
 searchField.addEventListener("keyup", (e) =>{
-  console.log(e.target.value)  
+  // console.log(e.target.value)  
   const pickedEpisodes = allEpisodes.filter(episode => {    
    return (
      episode.name
@@ -57,7 +57,38 @@ dropdown.onchange = function() {
   rootElem.innerHTML = "";
   if (episodeID == "original") {
     makePageForEpisodes(allEpisodes)
+    
   } else {
+
+    let backButton = "" //= document.createElement("button");
+    
+    //const el = document.querySelectorAll("button")
+    //console.log(el)
+    console.log(backButton)
+    if (!document.querySelector("button")) {
+      backButton = document.createElement("button");
+
+      //const el = document.querySelector("button");
+      backButton.id = "back-button";
+      backButton.innerText = "backButton";
+
+      document.body.appendChild(backButton);
+    } else {
+      backButton = document.createElement("button");
+      backButton.id = "back-button";
+      backButton.innerText = "backButton";
+
+      document.body.appendChild(backButton);
+      document.body.removeChild(backButton);
+    } 
+    
+    const button = document.getElementById("back-button");
+    button.addEventListener("click", () => {
+      //document.body.removeChild(backButton);
+      return location.reload();
+    });
+
+
   const dropDownEpisode = allEpisodes.filter(episode => {
     // console.log(episode.name)
     // console.log(episodeID)
@@ -66,9 +97,11 @@ dropdown.onchange = function() {
       episode.id == episodeID)
   })
   makePageForEpisodes(dropDownEpisode)
-  console.log(episodeID)
+  // console.log(episodeID)
   // rootElem.innerHTML = episodeID
 }}
+
+
 
 function makePageForEpisodes(episodeList) {  
   rootElem.className = "root"
