@@ -140,21 +140,23 @@ allShows.forEach(show=>{
   showSelect.appendChild(showOption)
 })
 
-showSelect.onchange = function() {
-  const showID = document.getElementById("shows").value
-  console.log(showID)
-  allShows.forEach(show=>{
-    if(showID==show.name){
-      console.log(show.id)
-      url = `https://api.tvmaze.com/shows/${show.id}/episodes`;
-      console.log(url)
+// showSelect.onchange = function() {
+//   const showID = document.getElementById("shows").value
+//   console.log(showID)
+//   rootElem.innerHTML = " ";
+//   searchField.innerHTML = " "
+//   allShows.forEach(show=>{
+//     if(showID==show.name){
+//       console.log(show.id)
+//       url = `https://api.tvmaze.com/shows/${show.id}/episodes`;
+//       console.log(url)
       
-    }
-    rootElem.innerHTML = "";
-    setup()
-    makePageForEpisodes(allEpisodes)
-  })
-}
+//     }
+    
+//     setup()
+//     makePageForEpisodes(allEpisodes)
+//   })
+// }
 
 console.log(allShows);
 window.onload = setup;
