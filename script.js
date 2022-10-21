@@ -1,7 +1,7 @@
 //You can edit ALL of the code here
 let allEpisodes; //= getAllEpisodes();
 const rootElem = document.getElementById("root");
-let url = "https://api.tvmaze.com/shows/82/episodes";
+let url = "https://api.tvmaze.com/shows";
 
 const setup = async () => {
   try {
@@ -55,7 +55,11 @@ const dropdown = document.getElementById("select");
 
 dropdown.onchange = function () {
   const episodeID = document.getElementById("select").value;
+  console.log(episodeID)
+  url = `https://api.tvmaze.com/shows/${episodeID}/episodes`;
   rootElem.innerHTML = "";
+  setup()
+  //rootElem.innerHTML = "";
   if (episodeID == "original") {
     makePageForEpisodes(allEpisodes);
   } else {
@@ -100,10 +104,12 @@ function makePageForEpisodes(episodeList) {
     episodeName.className = "episode-name";
     episodesContainer.className = "episode-container";
     episodesContainer.id = episode.id;
+    if(episode.season && episode.number){
     episodeName.innerText = `${episode.name} - ${episodeCode(
       episode.season,
       episode.number
-    )}`;
+    )}`
+  } else episodeName.innerText = episode.name;
     episodesContainer.appendChild(episodeName);
     const episodeImage = document.createElement("img");
     episodeImage.src = episode.image.medium;
@@ -115,9 +121,13 @@ function makePageForEpisodes(episodeList) {
     const selectItem = document.createElement("option");
     selectItem.value = episode.id; 
     selectItem.id = episode.id;
-    selectItem.innerText = `${episodeCode(episode.season, episode.number)} - ${
-      episode.name
-    }`;
+    if (episode.season && episode.number) {
+      selectItem.innerText = `${episode.name} - ${episodeCode(
+        episode.season,
+        episode.number
+      )}`;
+    } else selectItem.innerText = episode.name;
+    
     dropdown.appendChild(selectItem);
   });
 }
