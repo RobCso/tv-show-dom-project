@@ -1,15 +1,19 @@
 //You can edit ALL of the code here
 let allEpisodes; //= getAllEpisodes();
 const rootElem = document.getElementById("root");
+const header = document.getElementById("header")
 let url = "https://api.tvmaze.com/shows";
+
+
 
 const setup = async () => {
   try {
     const response = fetch(url);
     allEpisodes = await (await response).json();
-    console.log(allEpisodes)
+    //console.log(allEpisodes)
     makePageForEpisodes(allEpisodes);
-    console.log(makePageForEpisodes(allEpisodes))
+    
+    //console.log(makePageForEpisodes(allEpisodes))
   } catch (error) {
     console.log(error);
   }
@@ -32,6 +36,7 @@ const searchField = document.getElementById("search-field");
 
 searchField.addEventListener("keyup", (e) => {
   // console.log(e.target.value)
+  document.querySelector(".para").innerText = "";
   const pickedEpisodes = allEpisodes.filter((episode) => {
     return (
       episode.name
@@ -47,22 +52,45 @@ searchField.addEventListener("keyup", (e) => {
   //   rootElem.removeChild(rootElem.firstChild)
   // }
   makePageForEpisodes(pickedEpisodes);
-  document.querySelector(".para").innerText = "";
+  
   document.querySelector(
     ".para"
   ).innerText = `displaying ${pickedEpisodes.length}/${allEpisodes.length} episodes`;
+    //console.log(searchField.value)
+  if(searchField.value === "") {
+    document.querySelector(".para").innerText = "";
+  }
 });
 
 const dropdown = document.getElementById("select");
-
+const dropdownShows = document.getElementById("shows");
 
 dropdown.onchange = function () {
   const episodeID = document.getElementById("select").value;
-  
+  document.querySelector("#select").innerHTML = ""
   document.querySelector(".para").innerText = "";
   //console.log(episodeID)
-  url = `https://api.tvmaze.com/shows/${episodeID}/episodes`;
+  //console.log(allEpisodes[0].url);
   rootElem.innerHTML = "";
+  
+  if (allEpisodes[0].url.includes(".com/shows")){
+    url = `https://api.tvmaze.com/shows/${episodeID}/episodes`;
+} else if (allEpisodes[0].url.includes(".com/episodes")) {
+    const pickedEpisodes = allEpisodes.filter((episode) => {
+      console.log(episodeID)
+      console.log(episode.name)
+      console.log(episode.id)
+      return (
+        episode.id == episodeID
+      );
+    });
+    console.log(pickedEpisodes)
+    rootElem.innerHTML = "";
+    makePageForEpisodes(pickedEpisodes);
+}
+  
+  // console.log(url)
+  // console.log(episodeID)
   setup()
   //rootElem.innerHTML = "";
   if (episodeID == "original") {
@@ -76,6 +104,7 @@ dropdown.onchange = function () {
       backButton.id = "back-button";
       backButton.innerText = "backButton";
       document.body.appendChild(backButton);
+      header.appendChild(backButton)
     } else {
       backButton = document.createElement("button");
       backButton.id = "back-button";
@@ -95,53 +124,77 @@ dropdown.onchange = function () {
     //   // console.log(episode.id)
     //   return episode.id == episodeID;
     // });
-    makePageForEpisodes(dropDownEpisode);
+    //makePageForEpisodes(dropDownEpisode);
+    //console.log(dropDownEpisode)
     // console.log(episodeID)    
   }
 };
 
-function makePageForEpisodes(episodeList) {
+function makePageForEpisodes(episodesObject) {
   rootElem.className = "root";
-  episodeList.forEach((episode) => {
+  //console.log(episodesObject.url)
+  episodesObject.forEach((episode) => {
+    //console.log(episode.url);
+    //console.log(episode.url.includes(".com/shows"));
+    
     const episodesContainer = document.createElement("div");
     rootElem.appendChild(episodesContainer);
     const episodeName = document.createElement("h1");
     episodeName.className = "episode-name";
     episodesContainer.className = "episode-container";
     episodesContainer.id = episode.id;
-    if(episode.season && episode.number){
-    episodeName.innerText = `${episode.name} - ${episodeCode(
-      episode.season,
-      episode.number
-    )}`
-  } else episodeName.innerText = episode.name;
+    if (episode.season && episode.number) {
+      episodeName.innerText = `${episode.name} - ${episodeCode(
+        episode.season,
+        episode.number
+      )}`;
+    } else episodeName.innerText = episode.name;
     episodesContainer.appendChild(episodeName);
     const episodeImage = document.createElement("img");
 
     if (!episode.image) {
-      episodeImage.src = ""
+      episodeImage.src = "";
     } else {
-      episodeImage.src = episode.image.medium;}
-    
+      episodeImage.src = episode.image.medium;
+    }
+
     episodesContainer.appendChild(episodeImage);
     const episodeSummary = document.createElement("p");
     episodeSummary.innerHTML = episode.summary;
     episodesContainer.appendChild(episodeSummary);
     //select menu is bellow
     const selectItem = document.createElement("option");
-    
-    selectItem.value = episode.id; 
-    selectItem.id = episode.id;
-    if (episode.season && episode.number) {
-      selectItem.innerText = `${episode.name} - ${episodeCode(
-        episode.season,
-        episode.number
-      )}`;
-    } else selectItem.innerText = episode.name;
-    
-    dropdown.appendChild(selectItem);
+    if (episode.url.includes(".com/shows")) {
+      
+      selectItem.value = episode.id;
+      selectItem.id = episode.id;
+      
+      if (episode.season && episode.number) {
+        selectItem.innerText = `${episode.name} - ${episodeCode(
+          episode.season,
+          episode.number
+        )}`;
+      } else selectItem.innerText = episode.name;
+      dropdown.appendChild(selectItem);
+      
+    } else if (episode.url.includes(".com/episodes")) {     
+      //select menu is bellow
+      const showItem = document.createElement("option");
+      
+      showItem.value = episode.id;
+      showItem.id = episode.id;
+      if (episode.season && episode.number) {
+        showItem.innerText = `${episode.name} - ${episodeCode(
+          episode.season,
+          episode.number
+        )}`;
+      } else showItem.innerText = episode.name;
+      dropdown.appendChild(showItem);      
+    }
   });
 }
+
+
 
 function episodeCode(season, number) {
   season = season < 10 ? "0" + season : season;
