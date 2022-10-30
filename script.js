@@ -160,6 +160,7 @@ function makePageForEpisodes(episodesObject) {
 
     episodesContainer.appendChild(episodeImage);
     const episodeSummary = document.createElement("p");
+    episodeSummary.className = "episode-text"
     episodeSummary.innerHTML = episode.summary;
     episodesContainer.appendChild(episodeSummary);
     //select menu is bellow
