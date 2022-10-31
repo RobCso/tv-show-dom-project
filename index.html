@@ -3,19 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
+    <title>TV Show Project | Robert Csonka (RobCso)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="root">
-    </div>
+    <header id="header" class="header">
+      <p class="header-text">Welcome to my TV Show Project </p>
+   <!-- <select name="shows" id="shows" type="text">
+      -->
+    </select>
+    <select name="episodes"  id="select" type="text">
+      <option value="original">--Please choose an option--</option>
 
+    </select>
+    <input type="text" placeholder="search for episodes" id="search-field" name="search-field"/>
+    <p class="para"></p>
+    </header>
+    <div id="root">
+
+    </div>
+    
+    <footer>
+      <p class="footer-text">Great thanks for the content from https://www.tvmaze.com/ </p>
+    </footer>
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 
     <!-- Loads YOUR javascript code -->
+    <script src="shows.js"></script>
     <script src="script.js"></script>
+    
   </body>
 </html>

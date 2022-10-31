@@ -1,3 +1,87 @@
 #root {
-  color: red;
+  color: rgb(3, 15, 3);  
 }
+
+.root {
+    background-color: azure;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+    width: 90%;
+    margin: auto;
+}
+
+.episode-container {
+  background-color: rgb(222, 237, 240);
+  width: 100%;
+  text-align: center;
+  box-shadow: 5px 10px 18px #888888;
+}
+
+body {
+  margin: 0;
+}
+
+.header {
+  margin: 0;
+  background-color: rgb(166, 204, 216);
+  overflow: hidden;
+  padding: 5px 10px 20px;
+}
+
+/*.episode-text {
+  width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 1px solid;
+    text-overflow: ellipsis;
+}
+*/
+
+
+@media screen and (max-width:700px) {
+  .root {
+      background-color: azure;
+      display: grid;
+      grid-template-columns: 1fr 1fr ;
+      column-gap: 20px;
+      row-gap: 20px;
+      width: 90%;
+      margin: auto;
+    }
+  
+}
+
+@media screen and (max-width:500px) {
+  .root {
+    background-color: azure;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+    width: 90%;
+    margin: auto;
+  }
+
+}
+
+/* .episodeTab  {
+
+  color: rgb(0, 43, 0);
+  background-color: bisque;
+}
+
+.episodeName {
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 3px;
+  font-size: 1.2rem;
+}
+
+.allEpisodesDiv {
+  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+  } */
