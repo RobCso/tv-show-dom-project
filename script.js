@@ -126,7 +126,7 @@ dropdown.onchange = function () {
     if (!document.querySelector("button")) {
       backButton = document.createElement("button");      
       backButton.id = "back-button";
-      backButton.innerText = "backButton";
+      backButton.innerText = "Back to Shows";
       document.body.appendChild(backButton);
       header.appendChild(backButton)
     } else {
