@@ -3,7 +3,7 @@ let allEpisodes; //= getAllEpisodes();
 const rootElem = document.getElementById("root");
 const header = document.getElementById("header")
 let url = "https://api.tvmaze.com/shows";
-
+let sortedEpisodes;
 
 
 const setup = async () => {
@@ -11,7 +11,12 @@ const setup = async () => {
     const response = fetch(url);
     allEpisodes = await (await response).json();
     //console.log(allEpisodes)
-    makePageForEpisodes(allEpisodes);
+    sortedEpisodes = [...allEpisodes]
+    if (allEpisodes[0].genres){
+      makePageForEpisodes(sortedEpisodes.sort(compare));
+    } else {
+      makePageForEpisodes(allEpisodes)
+    }
     
     //console.log(makePageForEpisodes(allEpisodes))
   } catch (error) {
@@ -31,6 +36,19 @@ const setup = async () => {
   //     console.log(error);
   //   });
 };
+
+function compare(a,b) {
+  const nameA = a.name
+  const nameB = b.name
+
+  let comparison = 0;
+  if(nameA>nameB) {
+    comparison = 1;
+  } else if (nameA<nameB){
+    comparison = -1;
+  }
+  return comparison
+}
 
 const searchField = document.getElementById("search-field");
 
@@ -75,11 +93,12 @@ dropdown.onchange = function () {
   
   if (allEpisodes[0].url.includes(".com/shows")){
     url = `https://api.tvmaze.com/shows/${episodeID}/episodes`;
+    setup();
 } else if (allEpisodes[0].url.includes(".com/episodes")) {
     const pickedEpisodes = allEpisodes.filter((episode) => {
-      console.log(episodeID)
-      console.log(episode.name)
-      console.log(episode.id)
+      // console.log(episodeID)
+      // console.log(episode.name)
+      // console.log(episode.id)
       return (
         episode.id == episodeID
       );
@@ -87,11 +106,16 @@ dropdown.onchange = function () {
     console.log(pickedEpisodes)
     rootElem.innerHTML = "";
     makePageForEpisodes(pickedEpisodes);
+    // rootElem.style
+    dropdown.innerHTML = "";
+    allEpisodes.forEach(episode => {
+      createSelectOptions(episode)
+    })
 }
   
   // console.log(url)
   // console.log(episodeID)
-  setup()
+  
   //rootElem.innerHTML = "";
   if (episodeID == "original") {
     location.reload();//makePageForEpisodes(allEpisodes);
@@ -164,37 +188,38 @@ function makePageForEpisodes(episodesObject) {
     episodeSummary.innerHTML = episode.summary;
     episodesContainer.appendChild(episodeSummary);
     //select menu is bellow
-    const selectItem = document.createElement("option");
-    if (episode.url.includes(".com/shows")) {
-      
-      selectItem.value = episode.id;
-      selectItem.id = episode.id;
-      
-      if (episode.season && episode.number) {
-        selectItem.innerText = `${episode.name} - ${episodeCode(
-          episode.season,
-          episode.number
-        )}`;
-      } else selectItem.innerText = episode.name;
-      dropdown.appendChild(selectItem);
-      
-    } else if (episode.url.includes(".com/episodes")) {     
-      //select menu is bellow
-      const showItem = document.createElement("option");
-      
-      showItem.value = episode.id;
-      showItem.id = episode.id;
-      if (episode.season && episode.number) {
-        showItem.innerText = `${episode.name} - ${episodeCode(
-          episode.season,
-          episode.number
-        )}`;
-      } else showItem.innerText = episode.name;
-      dropdown.appendChild(showItem);      
-    }
+    createSelectOptions(episode);
   });
 }
 
+const createSelectOptions = (episode) => {
+  const selectItem = document.createElement("option");
+  if (episode.url.includes(".com/shows")) {
+    selectItem.value = episode.id;
+    selectItem.id = episode.id;
+
+    if (episode.season && episode.number) {
+      selectItem.innerText = `${episode.name} - ${episodeCode(
+        episode.season,
+        episode.number
+      )}`;
+    } else selectItem.innerText = episode.name;
+    dropdown.appendChild(selectItem);
+  } else if (episode.url.includes(".com/episodes")) {
+    //select menu is bellow
+    const showItem = document.createElement("option");
+
+    showItem.value = episode.id;
+    showItem.id = episode.id;
+    if (episode.season && episode.number) {
+      showItem.innerText = `${episode.name} - ${episodeCode(
+        episode.season,
+        episode.number
+      )}`;
+    } else showItem.innerText = episode.name;
+    dropdown.appendChild(showItem);
+  }
+}
 
 
 function episodeCode(season, number) {
