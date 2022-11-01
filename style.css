@@ -21,6 +21,7 @@
 
 body {
   margin: 0;
+  background-color: azure;
 }
 
 .header {
@@ -28,6 +29,10 @@ body {
   background-color: rgb(166, 204, 216);
   overflow: hidden;
   padding: 5px 10px 20px;
+}
+
+.show-name {
+  font-size: 2em;
 }
 
 /*.episode-text {
