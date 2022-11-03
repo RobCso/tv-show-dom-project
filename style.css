@@ -35,6 +35,9 @@ body {
   font-size: 2em;
 }
 
+input:focus {
+  background: greenyellow;
+}
 /*.episode-text {
   width: 400px;
     white-space: nowrap;
@@ -44,6 +47,11 @@ body {
 }
 */
 
+.read-more {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;  
+}
 
 @media screen and (max-width:700px) {
   .root {
