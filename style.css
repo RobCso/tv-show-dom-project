@@ -21,6 +21,7 @@
 
 body {
   margin: 0;
+  background-color: azure;
 }
 
 .header {
@@ -30,6 +31,13 @@ body {
   padding: 5px 10px 20px;
 }
 
+.show-name {
+  font-size: 2em;
+}
+
+input:focus {
+  background: greenyellow;
+}
 /*.episode-text {
   width: 400px;
     white-space: nowrap;
@@ -39,6 +47,11 @@ body {
 }
 */
 
+.read-more {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;  
+}
 
 @media screen and (max-width:700px) {
   .root {
